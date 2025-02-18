@@ -89,4 +89,4 @@ export const getUser = async (req, res) => {
     }
 };
 
-export default { register, signin, getUser };
+export default { register, signin, getUser }
