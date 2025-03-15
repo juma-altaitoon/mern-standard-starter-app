@@ -12,13 +12,14 @@ export const register = async (req, res) => {
         dateOfBirth,
         phoneNumber,
         address,
-        socialMedia,
-        profilePicture,
+        social,
+        avatar,
         bio,
         isAdmin
     } = req.body;
 
     const existingUser = await User.findOne({ email });
+    console.log(req.body)
     if (existingUser) {
         res.status(400);
         throw new Error("User already exists.");
@@ -51,17 +52,12 @@ export const signin = async (req, res) => {
         await user.generateToken()
         .then((token) => {
             res.cookie(
-                user.username,
+                'token',
                 token,
-                {
-                    path: "/",
-                    expires: new Date ( Date.now() + 3600000 ),
-                    httpOnly: true,
-                    samesite: 'lax'
-                }
+                { expires: new Date(Date.now()+ (3600*1000)) , httpOnly: true, secure: false, sameSite: "Lax" }
             );
             console.log("token generated: ",token)
-            return res.status(200).json({ message: "Successfully signed in", user: user._id, token });
+            return res.status(200).json({ message: "Successfully signed in", user: user._id });
         }).catch((error) => {
             console.error(error);
             res.status(500).json({ message: "Server Error" });
@@ -74,7 +70,7 @@ export const signin = async (req, res) => {
 
 export const getUser = async (req, res) => {
     const userId = req.user.id
-    // console.log("req.user.id", req.user.id)
+
     try {
         const user = await User.findById(userId, "-password");
         if(user){
@@ -90,4 +86,9 @@ export const getUser = async (req, res) => {
     }
 };
 
-export default { register, signin, getUser }
+export const logout = async (req, res) => {
+    res.clearCookie('token');
+    res.status(200).json({ message: 'Log Out Successful' })
+};
+
+export default { register, signin, getUser, logout };

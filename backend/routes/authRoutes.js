@@ -8,5 +8,6 @@ router.post('/register', user.register);
 router.post('/signin', user.signin);
 
 router.get('/profile', protect, user.getUser);
+router.delete('/logout', protect, user.logout);
 
 export default router;

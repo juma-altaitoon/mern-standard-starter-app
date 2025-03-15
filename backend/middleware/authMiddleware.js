@@ -4,9 +4,8 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export const protect = async (req, res, next) => {
-    const cookie = req.header("cookie");
-    const token = cookie.split('=')[1]
-    // console.log(token);
+    console.log("protect " )
+    const token = req.cookies.token
     
     if (!token){
         return res.status(401).json({ message: "You are not authorised, API Protected" });
@@ -19,11 +18,11 @@ export const protect = async (req, res, next) => {
             if (err) {
                 return res.status(401).json({ message:"Invalid Token" })
             }
-            // console.log("--", user)
+            console.log("--", user)
             req.user = user;
         }
     ) 
     next();
 }
 
-export default protect
+export default protect;

@@ -1,10 +1,14 @@
+import Hero from "../components/views/Hero";
+import ContactUs from "../components/views/ContactUs"
+import { Divider } from "@mui/material";
 
 export default function Home() {
 
     return (
         <section className='hero'>
-            <h1>Welcome to the Starter App</h1>
-            <p><em>Landing Page</em></p>
+            <Hero/>
+            <Divider/>
+            <ContactUs/>
         </section>
     )
 }

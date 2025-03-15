@@ -42,10 +42,10 @@ const userSchema = new mongoose.Schema({
     },
     phoneNumber: {
         type: String,
-        unique: true,
         trim: true,
         minlength: 10,
         maxlength: 15,
+        default:"0000-0000-00",
     },
     address: {
         street: {
@@ -70,12 +70,12 @@ const userSchema = new mongoose.Schema({
             maxlength: 50,
         },
     },
-    socialMedia: {
+    social: {
         type: Map,
         of: String,
         trim: true,
     },
-    profilePicture: {
+    avatar: {
         type: String,
         trim: true,
     },
@@ -106,7 +106,8 @@ userSchema.methods.generateToken = async function(){
     // Token Payload
     const payload = {
         id: this.id,
-        email: this.email,
+        username:this.username,
+
     }
     // JWT Secret Key
     const secretKey = process.env.JWT_SECRET;
