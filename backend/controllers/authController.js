@@ -3,10 +3,10 @@ import transporter from '../config/nodemailer.js';
 import crypto from 'crypto';
 
 // Part of a future implementation of otp verifications.
-// const generateOTP = () => {
-//     // Generate OTP 
-//     return crypto.randomBytes(3).toString('hex');
-// };
+const generateOTP = () => {
+    // Generate OTP 
+    return crypto.randomBytes(3).toString('hex');
+};
 
 // Register New User
 export const register = async (req, res) => {
@@ -143,7 +143,7 @@ export const verifyOTP = async (req, res) => {
 };
 
 // Password Reset Request
-export const passwordResetReq = async (req, res) => {
+export const sendOtp = async (req, res) => {
     const { email } = req.body;
     try {
         const user = await User.findOne({ email });
@@ -198,4 +198,4 @@ export const passwordReset = async (req, res) => {
 };
 
 
-export default { register, signin, getUser, logout };
+export default { register, signin, getUser, logout, verifyOTP, sendOtp, passwordReset };

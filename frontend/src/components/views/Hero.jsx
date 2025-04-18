@@ -19,6 +19,7 @@ export default function Hero () {
                 Welcome to the Starter App
               </Typography>
               <Button 
+                aria-label="Get Started"
                 variant="contained" 
                 color="primary" 
                 sx={{ mt: 2, alignSelf: { xs: 'center', md: 'flex-start' } }}
@@ -31,9 +32,10 @@ export default function Hero () {
             <Card sx={{ display: 'flex', boxShadow: 3, maxHeight: '80vh' }} elevation={3} > 
               <CardMedia
                 component="img"
-                sx={{ height: { xs: '50vh', md:'100%' }, width: '100%', objectFit: 'cover', borderRadius: '8px'}}
+                sx={{ height: { xs: '50vh', md:'100%' }, width: '100%', objectFit: 'cover', borderRadius: '8px' }}
                 image='/Hero_Image.jpg'
-                alt="Web App Solutions"
+                alt="Hero section showcasing Web App Solutions"
+                loading="lazy"
               />
             </Card>
           </Grid2>

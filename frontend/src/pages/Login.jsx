@@ -16,6 +16,7 @@ import IconButton from '@mui/material/IconButton';
 import Grid2 from '@mui/material/Grid2';
 import Container from '@mui/material/Container';
 import AuthContext from '../context/AuthContext';
+import { Alert, Snackbar } from '@mui/material';
 
 export default function Login() {
     const [ userLogin, setUserLogin ] = useState({})
@@ -24,8 +25,9 @@ export default function Login() {
     const [ passwordError, setPasswordError ] = useState(false);
     const [ passwordErrorMessage, setPasswordErrorMessage ] = useState('');
     const [ showPassword, setShowPassword ] = useState(false);
-    const { login } = useContext(AuthContext);
-    
+    const { login, message } = useContext(AuthContext);
+    // const [ message, setMessage ] = useState(null);
+    const [ openSB, setOpenSB ] = useState(false);
 
     const handleClickShowPassword = () => {
         setShowPassword((show) => !show);
@@ -74,7 +76,21 @@ export default function Login() {
         if (emailError || passwordError) {
             return;
         }
-        login(userLogin)
+        try {
+            await login(userLogin);
+            console.log(message);
+            setOpenSB(true);    
+        } catch (error) {
+            console.log(message, error);
+            setOpenSB(true);
+        }
+    }
+
+    const handleSBClose = (event, reason) => {
+        if (reason === 'clickaway'){
+            return; 
+        }
+        setOpenSB(false)
     }
 
     return(
@@ -87,6 +103,18 @@ export default function Login() {
                     >
                         Login
                     </Typography>
+                    { message && (
+                        <Snackbar open={openSB} autoHideDuration={6000} onClose={handleSBClose}>
+                            <Alert
+                                onClose={handleSBClose}
+                                severity={message === "Sign In Successful" ? 'success' : 'error'}
+                                variant="filled"
+                                sx={{ width: '100%' }}
+                            >
+                                {message}
+                            </Alert>
+                        </Snackbar>
+                    )}
                     <Grid2
                         container spacing={1}
                         component="form"

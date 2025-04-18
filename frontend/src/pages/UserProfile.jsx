@@ -3,10 +3,13 @@ import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import  AuthContext from '../context/AuthContext';
 import Axios from 'axios';
+import { Alert, Snackbar } from '@mui/material';
 
 export default function UserProfile() {
-    const [isEditing, setIsEditing] = useState(false);
+    const [ isEditing, setIsEditing ] = useState(false);
     const { isAuthenticated, user, setUser } = useContext(AuthContext);
+    const [ message, setMessage ] = useState(null);
+    const [ openSB, setOpenSB ] = useState(false);
     const navigate = useNavigate();
     // const [user, setUser] = useState({
     //     username: "Username",
@@ -87,14 +90,37 @@ export default function UserProfile() {
             }
 
             await Axios.put("http://localhost:5000/users/profile", formData, { withCredentials: true });
+            setMessage("Profile successfully updated");
+            setOpenSB(true);
             setIsEditing(false);
         } catch (error) {
             console.error("Failed to save user data: ", error);
+            setMessage("Registration Failed!")
+            setOpenSB(true);
         }
     };
 
+    const handleSBClose = (event, reason) => {
+        if (reason === 'clickaway'){
+            return; 
+        }
+        setOpenSB(false)
+    }
+
     return (
         <section>
+            { message && (
+                <Snackbar open={openSB} autoHideDuration={6000} onClose={handleSBClose}>
+                    <Alert
+                        onClose={handleSBClose}
+                        severity={message === "Profile successfully updated" ? 'success' : 'error'}
+                        variant="filled"
+                        sx={{ width: '100%' }}
+                    >
+                        {message}
+                    </Alert>
+                </Snackbar>
+            )}
             <Container  maxWidth='md' sx={{ mt: 4 }}>
                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', m:2 ,mb: 3, boxShadow: 3, bgcolor: 'whitesmoke', borderRadius: 1}}>
                     <Avatar src={user.avatarUrl || ""} sx={{ width: 100, height: 100, m: 2, boxShadow: 2 }} />

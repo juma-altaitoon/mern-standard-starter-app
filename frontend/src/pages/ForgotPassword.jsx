@@ -1,5 +1,5 @@
 import { useState } from 'react';
-
+import Axios from 'axios'
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import TextField from '@mui/material/TextField';
@@ -13,6 +13,14 @@ export default function ForgotPassword() {
     const [ email, setEmail ] = useState();
     const [ emailError, setEmailError ] = useState(false);
     const [ emailErrorMessage, setEmailErrorMessage ] = useState('');
+    
+    const [otp, setOtp] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+    const [step, setStep] = useState(1); // Step 1: Enter email, Step 2: Enter OTP and new password
+    const [otpError, setOtpError] = useState(false);
+    const [otpErrorMessage, setOtpErrorMessage] = useState('');
+    const [passwordError, setPasswordError] = useState(false);
+    const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
 
     const validateInputs = () => {
         const email = document.getElementById('email');
@@ -31,11 +39,37 @@ export default function ForgotPassword() {
         return isValid;
     }
 
-    const handleSubmit = (event) => {
-        if (emailError) {
-            event.preventDefault();
+    const handleRequestOtp = async () => {
+        if (!validateInputs()){
             return;
-        }   
+        }
+        try {
+            const response = await Axios.post('/users/forgot-password', { email});
+            console.log(response.data);
+            setStep(2); // Move to OTP step
+        } catch (error) {
+            console.error("Error requesting OTP: ", error.response?.data || error.message);
+        }
+    }
+    
+    const handleResetPassword = async () => {
+        if (!otp || otp.length !== 6) {
+            setOtpError(true);
+            setOtpErrorMessage('Please Enter a valid 6 digit OTP.');
+            return;
+        }
+        if (!newPassword || newPassword.length < 12) {
+            setPasswordError(true);
+            setPasswordErrorMessage("Passwword must be at least 12 characters long.");
+            return;
+        }
+        try {
+            const response = await Axios.post('/users/reset-password', { email, otp, newPassword});
+            console.log(response.data)
+            setStep(1); // Reset to email step
+        } catch (error) {
+            console.error("Error resseting password: ", error.response?.data || error.message)
+        }
     }
 
     return(
@@ -47,43 +81,86 @@ export default function ForgotPassword() {
                         variant="h4"
                         sx={{ width: '100%', fontSize: '2rem', m:2 }}
                     >
-                        Forgot Password ?
+                        {step === 1 ? "Forgot Password ?" : "Enter OTP"}
                     </Typography>
                     <Typography component='p' variant='body1' sx={{ m:2 }} >
-                        Enter your email address and we will send you a link to reset your password.
+                        {step === 1
+                            ? "Enter your email address and we will send you a link to reset your password."
+                            : "Enter the OTP sent to your email address."
+                        }
                     </Typography>
                     <Grid2
                         container spacing={1}
                         component="form"
-                        onSubmit={handleSubmit}
+                        onSubmit={(e) => e.preventDefault()}
                         sx={{ display: '100%', flexDirection: 'column', gap: 1, boxShadow: 2 }}
                     >
-                        <Grid2 size={10} sx={{ m: 2 }}>
-                            <TextField
-                                label='Email'
-                                type='email'
-                                autoComplete='email'
-                                name='email'
-                                required
-                                fullWidth
-                                id='email'
-                                placeholder="your@email.com"
-                                variant='outlined'
-                                error={emailError}
-                                helpertext={emailErrorMessage}
-                                color={emailError ? 'error' : 'primary'}
-                                onChange= { (event) => setEmail(event.target.value)}
-                                value={email}
-                            />
-                        </Grid2>
+                        {step === 1 && (
+                            <Grid2 size={10} sx={{ m: 2 }}>
+                                <TextField
+                                    label='Email'
+                                    type='email'
+                                    autoComplete='email'
+                                    name='email'
+                                    required
+                                    fullWidth
+                                    id='email'
+                                    placeholder="your@email.com"
+                                    variant='outlined'
+                                    error={emailError}
+                                    helpertext={emailErrorMessage}
+                                    color={emailError ? 'error' : 'primary'}
+                                    onChange= { (event) => setEmail(event.target.value)}
+                                    value={email}
+                                />
+                            </Grid2>
+                        )}
+                        {step === 2 && (
+                            <>
+                                <Grid2 size={10} sx={{ m: 2 }}>
+                                    <TextField
+                                        label='OTP'
+                                        type='text'
+                                        name='otp'
+                                        required
+                                        fullWidth
+                                        id='otp'
+                                        placeholder="Enter 6-digit OTP"
+                                        variant='outlined'
+                                        error={otpError}
+                                        helperText={otpErrorMessage}
+                                        color={otpError ? 'error' : 'primary'}
+                                        onChange={(event) => setOtp(event.target.value)}
+                                        value={otp}
+                                    />
+                                </Grid2>
+                                <Grid2 size={10} sx={{ m: 2 }}>
+                                    <TextField
+                                        label='New Password'
+                                        type='password'
+                                        name='newPassword'
+                                        required
+                                        fullWidth
+                                        id='newPassword'
+                                        placeholder="Enter new password"
+                                        variant='outlined'
+                                        error={passwordError}
+                                        helperText={passwordErrorMessage}
+                                        color={passwordError ? 'error' : 'primary'}
+                                        onChange={(event) => setNewPassword(event.target.value)}
+                                        value={newPassword}
+                                    />
+                                </Grid2>
+                            </>
+                        )}
                         <Divider />
                         <Button
                             type='submit'
                             fullWidth
                             variant='contained'
-                            onClick={validateInputs}
+                            onClick={step === 1 ? handleRequestOtp : handleResetPassword}
                         >
-                            Reset Password
+                            {step === 1 ? "Request OTP" : "Reset Password"}
                         </Button>
                     </Grid2>
                 </Card>

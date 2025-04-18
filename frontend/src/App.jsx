@@ -1,19 +1,23 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense, lazy } from 'react'
 import './index.css'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import CssBaseline from '@mui/material/CssBaseline';
 import Navbar from './components/Navbar';
-import Home from './pages/Home';
-import About from './pages/About';
-import Register from './pages/Register';
-import Login from './pages/Login'
-import ForgotPassword from './pages/ForgotPassword';
-import NotFound from './pages/NotFound';
 import Footer from './components/Footer';
-import UserProfile from './pages/UserProfile';
 import { AuthProvider } from './context/AuthContext';
-import ProtectedRoute from './components/ProtectedRoute';
-import PrivatePage from './pages/PrivatePage';
+import { CircularProgress } from '@mui/material';
+import { createTheme, ThemeProvider} from '@mui/material/styles';
+import Box from 'mui/material/Box';
+
+const Home = lazy(() => import('./pages/Home'));
+const About = lazy(()=> import('./pages/About'));
+const Register = lazy(() => import('./pages/Register'));
+const Login = lazy(() => import('./pages/Login'));
+const ForgotPassword = lazy(() => import('./pages/ForgotPassword'));
+const NotFound = lazy(() => import('./pages/NotFound'));
+const UserProfile = lazy(() => import('./pages/UserProfile'));
+const ProtectedRoute = lazy(() => import('./components/ProtectedRoute'));
+const PrivatePage = lazy(() => import('./pages/PrivatePage'));
 
 export default function App() {
   const [ theme, setTheme ] = useState(localStorage.getItem('theme') || 'light')
@@ -27,14 +31,26 @@ export default function App() {
     setTheme( theme === 'light' ? 'dark' : 'light')
   };
 
+  const muiTheme = createTheme({
+    palette: {
+      mode: theme,
+    },
+  });
+
   return (
-    <React.Fragment>
+    <ThemeProvider theme = {muiTheme}>
       <CssBaseline enableColorScheme/>
       <Router>
         <AuthProvider>
           <div className='app'>
             <Navbar toggleTheme={toggleTheme} theme={theme}/>
-            <div>
+            <Suspense 
+              fallback={
+                <Box sx={{ display: 'flex', justifyContent: "center", alignItems: 'center', height: '100vh'}}>
+                  <CircularProgress />
+                </Box>
+              }
+            >
               <Routes>
                 <Route path='/' element={<Home/>} />
                 <Route path='/about' element={<About/>} />
@@ -47,11 +63,11 @@ export default function App() {
                 {/* Redirect unknown routes to "/404" */}
                 <Route path='/*' element={<Navigate to="/404" />} />
               </Routes>
-            </div>
+            </Suspense>
             <Footer/>
           </div>
         </AuthProvider>
       </Router>
-    </React.Fragment>
+    </ThemeProvider>
   )
 };
