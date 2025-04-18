@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Link } from  'react-router-dom';
 import propTypes from 'prop-types';
 import { AppBar, Toolbar, Typography, Button, Container, IconButton, Box, Menu, MenuItem, Avatar } from '@mui/material'
@@ -6,15 +6,15 @@ import DiamondIcon from '@mui/icons-material/Diamond';
 import MenuIcon from '@mui/icons-material/Menu';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
-import { useAuth } from '../context/AuthContext';
+import AuthContext  from '../context/AuthContext';
 
 
-const pages = ['About', 'Profile'];
+const pages = ['About', 'Profile', 'Private'];
 
 export default function Navbar({toggleTheme, theme}) {
     const [ anchorElNav, setAnchorElNav ] = useState(null);
     // Get authentication state and user information
-    const { isAuthenticated, user } = useAuth(); 
+    const { isAuthenticated, user } = useContext(AuthContext); 
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -25,7 +25,7 @@ export default function Navbar({toggleTheme, theme}) {
     }
 
     return (
-        <AppBar component="header" position='sticky' elevation={10} sx={{maxWidth:'100%'}}>
+        <AppBar component="header" position='sticky' elevation={10} sx={{maxWidth:'100%', maxHeight: '10vh', justifyContent: 'center', alignItems: 'center'}}>
             <Container maxWidth="xl"> 
                 <Toolbar disableGutters >
                     <DiamondIcon sx={{ display: {xs: 'none', md: 'flex'}, color:'ActiveBorder', fontSize:'3rem' }} />

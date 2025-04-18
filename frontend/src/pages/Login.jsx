@@ -78,89 +78,90 @@ export default function Login() {
     }
 
     return(
-        <Container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: "space-evenly" }} >
-            <Card variant='outlined' elevation={1} sx={{ m: 2, boxShadow: 3, borderColor: 'primary'}}>
-                <Typography
-                    component="h1"
-                    sx={{fontSize: '2rem', textAlign: 'center', mt: 1 }}
-                >
-                    Login
-                </Typography>
-                <Grid2
-                    container spacing={1}
-                    component="form"
-                    onSubmit={handleSubmit}
-                    sx={{ display: '100%', flexDirection: 'column', gap: 1, boxShadow: 2 }}
-                >
-                    <Grid2 size={10} sx={{ m: 2 }}>
-                        <TextField
-                            label='Email'
-                            type='email'
-                            autoComplete='email'
-                            name='email'
-                            required
-                            fullWidth
-                            id='email'
-                            placeholder="your@email.com"
-                            variant='outlined'
-                            error={emailError}
-                            helpertext={emailErrorMessage}
-                            color={emailError ? 'error' : 'primary'}
-                            onChange={handleChange}
-                        />
-                    </Grid2>
-                    <Grid2 size={10} sx={{display: 'flex', flexDirection: 'row', gap: 2, m: 2}}>
-                        <FormControl variant="outlined" required>
-                            <InputLabel htmlFor="password">Password</InputLabel>    
-                            <OutlinedInput
-                                id="password"
-                                type={showPassword ? 'text' : 'password'}
-                                endAdornment={
-                                <InputAdornment position="end">
-                                    <IconButton
-                                    aria-label={
-                                        showPassword ? 'hide the password' : 'display the password'
-                                    }
-                                    onClick={handleClickShowPassword}
-                                    onMouseDown={handleMouseDownPassword}
-                                    onMouseUp={handleMouseUpPassword}
-                                    edge="end"
-                                    >
-                                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                                    </IconButton>
-                                </InputAdornment>
-                                }
-                                label="Password"
-                                name='password'
-                                required
-                                fullWidth
-                                variant='outlined'
-                                placeholder="••••••"
-                                error={passwordError}
-                                helpertext={passwordErrorMessage}
-                                onChange={handleChange}
-                            />
-                        </FormControl>
-                    </Grid2>
-                    <Button
-                        type='submit'
-                        variant='contained'
-                        onClick={validateInputs}
+        <section>
+            <Container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: "space-evenly" }} >
+                <Card variant='outlined' elevation={1} sx={{ m: 2, boxShadow: 3, borderColor: 'primary'}}>
+                    <Typography
+                        component="h1"
+                        sx={{fontSize: '2rem', textAlign: 'center', mt: 1 }}
                     >
                         Login
-                    </Button>
-                </Grid2>
-                <Divider />
-                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, m:1 }}>
-                    <Button 
-                        to="/forgot-password"
-                        variant="body2"
-                        sx={{ alignSelf: 'center' }}
+                    </Typography>
+                    <Grid2
+                        container spacing={1}
+                        component="form"
+                        onSubmit={handleSubmit}
+                        sx={{ display: '100%', flexDirection: 'column', gap: 1, boxShadow: 2 }}
                     >
-                        Forgot password?
-                    </Button>
-                </Box>
-            </Card>
-        </Container>
+                        <Grid2 size={10} sx={{ m: 2 }}>
+                            <TextField
+                                label='Email'
+                                type='email'
+                                autoComplete='email'
+                                name='email'
+                                required
+                                fullWidth
+                                id='email'
+                                placeholder="your@email.com"
+                                variant='outlined'
+                                error={emailError}
+                                helpertext={emailErrorMessage}
+                                color={emailError ? 'error' : 'primary'}
+                                onChange={handleChange}
+                            />
+                        </Grid2>
+                        <Grid2 size={10} sx={{display: 'flex', flexDirection: 'row', gap: 2, m: 2}}>
+                            <FormControl variant="outlined" required>
+                                <InputLabel htmlFor="password">Password</InputLabel>    
+                                <OutlinedInput
+                                    id="password"
+                                    type={showPassword ? 'text' : 'password'}
+                                    endAdornment={
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                        aria-label={
+                                            showPassword ? 'hide the password' : 'display the password'
+                                        }
+                                        onClick={handleClickShowPassword}
+                                        onMouseDown={handleMouseDownPassword}
+                                        onMouseUp={handleMouseUpPassword}
+                                        edge="end"
+                                        >
+                                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                    }
+                                    label="Password"
+                                    name='password'
+                                    required
+                                    fullWidth
+                                    variant='outlined'
+                                    placeholder="••••••"
+                                    error={passwordError}
+                                    helpertext={passwordErrorMessage}
+                                    onChange={handleChange}
+                                />
+                            </FormControl>
+                        </Grid2>
+                        <Button
+                            type='submit'
+                            variant='contained'
+                            onClick={validateInputs}
+                        >
+                            Login
+                        </Button>
+                    </Grid2>
+                    <Divider />
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, m:1 }}>
+                        <Button
+                            variant="body2"
+                            sx={{ alignSelf: 'center' }}
+                        >
+                            <Link to="/forgot-password" >Forgot password?</Link>
+                        </Button>
+                    </Box>
+                </Card>
+            </Container>
+        </section>
     );
 }

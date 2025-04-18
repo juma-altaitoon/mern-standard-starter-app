@@ -2,12 +2,12 @@ import express from 'express'
 import user from '../controllers/authController.js'
 import protect from '../middleware/authMiddleware.js'
 
-const router = express.Router()
+const authRouter = express.Router()
 
-router.post('/register', user.register);
-router.post('/signin', user.signin);
+authRouter.post('/register', user.register);
+authRouter.post('/signin', user.signin);
 
-router.get('/profile', protect, user.getUser);
-router.delete('/logout', protect, user.logout);
+authRouter.get('/profile', protect, user.getUser);
+authRouter.delete('/logout', protect, user.logout);
 
 export default router;

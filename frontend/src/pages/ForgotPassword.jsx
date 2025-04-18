@@ -39,53 +39,55 @@ export default function ForgotPassword() {
     }
 
     return(
-        <Container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: "space-evenly", m: 10 }} >
-            <Card variant='outlined' elevation={0} sx={{ m: 2, boxShadow: 3, borderColor: 'primary.main' }}>
-                <Typography
-                    component="h1"
-                    variant="h4"
-                    sx={{ width: '100%', fontSize: '2rem', m:2 }}
-                >
-                    Forgot Password ?
-                </Typography>
-                <Typography component='p' variant='body1' sx={{ m:2 }} >
-                    Enter your email address and we will send you a link to reset your password.
-                </Typography>
-                <Grid2
-                    container spacing={1}
-                    component="form"
-                    onSubmit={handleSubmit}
-                    sx={{ display: '100%', flexDirection: 'column', gap: 1, boxShadow: 2 }}
-                >
-                    <Grid2 size={10} sx={{ m: 2 }}>
-                        <TextField
-                            label='Email'
-                            type='email'
-                            autoComplete='email'
-                            name='email'
-                            required
-                            fullWidth
-                            id='email'
-                            placeholder="your@email.com"
-                            variant='outlined'
-                            error={emailError}
-                            helpertext={emailErrorMessage}
-                            color={emailError ? 'error' : 'primary'}
-                            onChange= { (event) => setEmail(event.target.value)}
-                            value={email}
-                        />
-                    </Grid2>
-                    <Divider />
-                    <Button
-                        type='submit'
-                        fullWidth
-                        variant='contained'
-                        onClick={validateInputs}
+        <section>
+            <Container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: "space-evenly", m: 10 }} >
+                <Card variant='outlined' elevation={0} sx={{ m: 2, boxShadow: 3, borderColor: 'primary.main' }}>
+                    <Typography
+                        component="h1"
+                        variant="h4"
+                        sx={{ width: '100%', fontSize: '2rem', m:2 }}
                     >
-                        Reset Password
-                    </Button>
-                </Grid2>
-            </Card>
-        </Container>
+                        Forgot Password ?
+                    </Typography>
+                    <Typography component='p' variant='body1' sx={{ m:2 }} >
+                        Enter your email address and we will send you a link to reset your password.
+                    </Typography>
+                    <Grid2
+                        container spacing={1}
+                        component="form"
+                        onSubmit={handleSubmit}
+                        sx={{ display: '100%', flexDirection: 'column', gap: 1, boxShadow: 2 }}
+                    >
+                        <Grid2 size={10} sx={{ m: 2 }}>
+                            <TextField
+                                label='Email'
+                                type='email'
+                                autoComplete='email'
+                                name='email'
+                                required
+                                fullWidth
+                                id='email'
+                                placeholder="your@email.com"
+                                variant='outlined'
+                                error={emailError}
+                                helpertext={emailErrorMessage}
+                                color={emailError ? 'error' : 'primary'}
+                                onChange= { (event) => setEmail(event.target.value)}
+                                value={email}
+                            />
+                        </Grid2>
+                        <Divider />
+                        <Button
+                            type='submit'
+                            fullWidth
+                            variant='contained'
+                            onClick={validateInputs}
+                        >
+                            Reset Password
+                        </Button>
+                    </Grid2>
+                </Card>
+            </Container>
+        </section>
     );
 }

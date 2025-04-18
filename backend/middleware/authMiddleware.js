@@ -10,19 +10,19 @@ export const protect = async (req, res, next) => {
     if (!token){
         return res.status(401).json({ message: "You are not authorised, API Protected" });
     }
-    jwt.verify(
-        token,
-        process.env.JWT_SECRET,
-        (err, user) => {
-            // console.log("-", user)
-            if (err) {
-                return res.status(401).json({ message:"Invalid Token" })
-            }
-            console.log("--", user)
-            req.user = user;
+    try {
+        const user = jwt.verify(token, process.env.JWT_SECRET);
+        req.user = user;
+        console.log("req.user = ", user);
+        next();
+    } catch (error) {
+        if (error.name === 'TokenExpiredError'){
+            return res.status(401).json({ message: "Token expired, please log in again." })
         }
-    ) 
-    next();
+        if (error) {
+            return res.status(401).json({ message: "Invalid Token, please login." })
+        }
+    }
 }
 
 export default protect;

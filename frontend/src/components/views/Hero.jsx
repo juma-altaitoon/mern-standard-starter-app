@@ -1,8 +1,8 @@
-import { Container, Typography, Box, Grid2, Card, CardMedia } from '@mui/material';
+import { Container, Typography, Box, Grid2, Card, CardMedia, Button } from '@mui/material';
 
 export default function Hero () {
   return (
-    <section className="hero">
+    <section className="hero" style={{ backgroundColor: 'linear-gradient(to bottom, #1e3c72, #2a5298)', color: 'white' }}>
       <Container maxWidth="lg" sx={{ position: 'relative' }}>
         <Grid2 container spacing={2}>
           <Grid2 xs={12} md={6}>
@@ -11,20 +11,27 @@ export default function Hero () {
                 display: 'flex', 
                 flexDirection: 'column', 
                 justifyContent: 'center', 
-                height: '100%' 
+                height: { xs: 'auto', md: '100%'},
+                textAlign: { xs: 'center', md: 'left'} 
               }}
             >
-              <Typography variant="h6" gutterBottom sx={{ color: 'whitesmoke', position: 'absolute', top:'20px', left:'40px', boxShadow: 3 }} >
+              <Typography variant="h6" gutterBottom sx={{ color: 'whitesmoke', position: { xs: 'static', md : 'absolute' }, top:'20px', left:'40px', boxShadow: 3 }} >
                 Welcome to the Starter App
               </Typography>
-              {/* Add a call to action button here (e.g., "Get Started", "Learn More") */}
+              <Button 
+                variant="contained" 
+                color="primary" 
+                sx={{ mt: 2, alignSelf: { xs: 'center', md: 'flex-start' } }}
+              >
+                Get Started
+              </Button>
             </Box>
           </Grid2>
           <Grid2 xs={12} md={6}>
             <Card sx={{ display: 'flex', boxShadow: 3, maxHeight: '80vh' }} elevation={3} > 
               <CardMedia
                 component="img"
-                sx={{ width: '100%', objectFit: 'cover' }}
+                sx={{ height: { xs: '50vh', md:'100%' }, width: '100%', objectFit: 'cover', borderRadius: '8px'}}
                 image='/Hero_Image.jpg'
                 alt="Web App Solutions"
               />

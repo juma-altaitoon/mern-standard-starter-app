@@ -1,4 +1,10 @@
 import { Container, Typography, Link, Box, Grid2 } from "@mui/material";
+import InstagramIcon from '@mui/icons-material/Instagram';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import XIcon from '@mui/icons-material/X';
+import PinterestIcon from '@mui/icons-material/Pinterest';
+
 
 export default function Footer(){
 
@@ -21,9 +27,12 @@ export default function Footer(){
                     <Grid2 xs={12} md={4}>
                         <Typography variant="body2" align="right">
                             Follow :
-                            <Link to='#' color="inherit" sx={{ ml: 1 }}>Facebook</Link>
-                            <Link to='#' color="inherit" sx={{ ml: 1 }}>Instagram</Link>
-                            <Link to='#' color="inherit" sx={{ ml: 1 }}>LinkedIn</Link>
+                            <Link to='#' color="inherit" sx={{ ml: 1 }}><FacebookIcon/></Link>
+                            <Link to='#' color="inherit" sx={{ ml: 1 }}><InstagramIcon/></Link>
+                            <Link to='#' color="inherit" sx={{ ml: 1 }}>< LinkedInIcon /></Link>
+                            <Link to='#' color="inherit" sx={{ ml: 1 }}><XIcon/></Link>
+                            <Link to='#' color="inherit" sx={{ ml: 1 }}><PinterestIcon /></Link>
+
                         </Typography>
                     </Grid2>
                 </Grid2>

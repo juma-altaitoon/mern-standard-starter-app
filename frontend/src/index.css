@@ -19,7 +19,6 @@ a:hover {
 body {
   margin: 0;
   transition: background-color 0.3s, color 0.3s;
- 
 }
 
 body.light-theme {
@@ -32,10 +31,29 @@ body.dark-theme {
   color: var(--dark-text);
 }
 
+section {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background-color: white;
+  box-sizing: border-box;
+}
+
 .container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
   max-width: 960px;
   margin: 0 auto;
   padding: 20px;
+}
+
+.hero img {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 h1 {

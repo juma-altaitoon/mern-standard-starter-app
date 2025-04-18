@@ -194,279 +194,281 @@ export default function Register() {
     ));
 
     return(
-        <Container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: "center", }} >
-            <Card variant='outlined' elevation={0} sx={{ m:2, boxShadow: 3, borderColor: 'primary.main' }}>
-                <Typography
-                    component="h1"
-                    variant="h4"
-                    sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)', m:2, textAlign: 'center' }}
-                >
-                    Register User
-                </Typography>
-                { message && (
-                    <Snackbar open={openSB} autoHideDuration={6000} onClose={handleSBClose}>
-                        <Alert
-                            onClose={handleSBClose}
-                            severity={message === "Registration Successful" ? 'success' : 'error'}
-                            variant="filled"
-                            sx={{ width: '100%' }}
-                        >
-                            {message}
-                        </Alert>
-                    </Snackbar>
-            
-                )}
-                <Grid2
-                    container spacing={1}
-                    component="form"
-                    onSubmit={handleSubmit}
-                    sx={{ display: '100%', flexDirection: 'column', gap: 1, boxShadow: 2 }}
-                >
-                    <Grid2 size={10} sx={{display: 'flex', flexDirection: 'row', gap: 2, m: 2}}>
-                        <TextField
-                            label="Username"
-                            name="username"
-                            onChange={handleChange}
-                            fullWidth
-                            required
-                            variant='outlined'
-                        />
-                        <TextField
-                            label='Email'
-                            type='email'
-                            name='email'
-                            required
-                            fullWidth
-                            id='email'
-                            placeholder="your@email.com"
-                            variant='outlined'
-                            error={emailError}
-                            helpertext={emailErrorMessage}
-                            color={emailError ? 'error' : 'primary'}
-                            onChange={handleChange}
-                        />
-                    </Grid2>
-                    <Grid2 size={10} sx={{display: 'flex', flexDirection: 'row', gap: 2, m: 2}}>
-                        <FormControl variant="outlined" required>
-                            <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>    
-                            <OutlinedInput
-                                id="outlined-adornment-password"
-                                type={showPassword ? 'text' : 'password'}
-                                endAdornment={
-                                <InputAdornment position="end">
-                                    <IconButton
-                                    aria-label={
-                                        showPassword ? 'hide the password' : 'display the password'
-                                    }
-                                    onClick={handleClickShowPassword}
-                                    onMouseDown={handleMouseDownPassword}
-                                    onMouseUp={handleMouseUpPassword}
-                                    edge="end"
-                                    >
-                                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                                    </IconButton>
-                                </InputAdornment>
-                                }
-                                label="Password"
-                                name='password'
+        <section>
+            <Container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: "center", }} >
+                <Card variant='outlined' elevation={0} sx={{ m:2, boxShadow: 3, borderColor: 'primary.main' }}>
+                    <Typography
+                        component="h1"
+                        variant="h4"
+                        sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)', m:2, textAlign: 'center' }}
+                    >
+                        Register User
+                    </Typography>
+                    { message && (
+                        <Snackbar open={openSB} autoHideDuration={6000} onClose={handleSBClose}>
+                            <Alert
+                                onClose={handleSBClose}
+                                severity={message === "Registration Successful" ? 'success' : 'error'}
+                                variant="filled"
+                                sx={{ width: '100%' }}
+                            >
+                                {message}
+                            </Alert>
+                        </Snackbar>
+                
+                    )}
+                    <Grid2
+                        container spacing={1}
+                        component="form"
+                        onSubmit={handleSubmit}
+                        sx={{ display: '100%', flexDirection: 'column', gap: 1, boxShadow: 2 }}
+                    >
+                        <Grid2 size={10} sx={{display: 'flex', flexDirection: 'row', gap: 2, m: 2}}>
+                            <TextField
+                                label="Username"
+                                name="username"
+                                onChange={handleChange}
+                                fullWidth
+                                required
+                                variant='outlined'
+                            />
+                            <TextField
+                                label='Email'
+                                type='email'
+                                name='email'
                                 required
                                 fullWidth
+                                id='email'
+                                placeholder="your@email.com"
                                 variant='outlined'
-                                placeholder="••••••"
-                                error={passwordError}
-                                helpertext={passwordErrorMessage}
+                                error={emailError}
+                                helpertext={emailErrorMessage}
+                                color={emailError ? 'error' : 'primary'}
                                 onChange={handleChange}
                             />
-                        </FormControl>
-                        <FormControl variant="outlined" required>
-                            <InputLabel htmlFor="outlined-adornment-password1">Confirm Password</InputLabel>
-                            <OutlinedInput
-                                id="outlined-adornment-password1"
-                                type={showPassword ? 'text' : 'password'}
-                                endAdornment={
-                                <InputAdornment position="end">
-                                    <IconButton
-                                    aria-label={
-                                        showPassword ? 'hide the password' : 'display the password'
+                        </Grid2>
+                        <Grid2 size={10} sx={{display: 'flex', flexDirection: 'row', gap: 2, m: 2}}>
+                            <FormControl variant="outlined" required>
+                                <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>    
+                                <OutlinedInput
+                                    id="outlined-adornment-password"
+                                    type={showPassword ? 'text' : 'password'}
+                                    endAdornment={
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                        aria-label={
+                                            showPassword ? 'hide the password' : 'display the password'
+                                        }
+                                        onClick={handleClickShowPassword}
+                                        onMouseDown={handleMouseDownPassword}
+                                        onMouseUp={handleMouseUpPassword}
+                                        edge="end"
+                                        >
+                                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                    </InputAdornment>
                                     }
-                                    onClick={handleClickShowPassword}
-                                    onMouseDown={handleMouseDownPassword}
-                                    onMouseUp={handleMouseUpPassword}
-                                    edge="end"
-                                    >
-                                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                                    </IconButton>
-                                </InputAdornment>
-                                }
-                                label="Confirm Password"
-                                name='passwordCheck'
+                                    label="Password"
+                                    name='password'
+                                    required
+                                    fullWidth
+                                    variant='outlined'
+                                    placeholder="••••••"
+                                    error={passwordError}
+                                    helpertext={passwordErrorMessage}
+                                    onChange={handleChange}
+                                />
+                            </FormControl>
+                            <FormControl variant="outlined" required>
+                                <InputLabel htmlFor="outlined-adornment-password1">Confirm Password</InputLabel>
+                                <OutlinedInput
+                                    id="outlined-adornment-password1"
+                                    type={showPassword ? 'text' : 'password'}
+                                    endAdornment={
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                        aria-label={
+                                            showPassword ? 'hide the password' : 'display the password'
+                                        }
+                                        onClick={handleClickShowPassword}
+                                        onMouseDown={handleMouseDownPassword}
+                                        onMouseUp={handleMouseUpPassword}
+                                        edge="end"
+                                        >
+                                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                    }
+                                    label="Confirm Password"
+                                    name='passwordCheck'
+                                    required
+                                    fullWidth
+                                    variant='outlined'
+                                    error={passwordError}
+                                    helpertext={passwordErrorMessage}
+                                />
+                            </FormControl>
+                        </Grid2>
+                        <Grid2 size={10} sx={{display: 'flex', flexDirection: 'row', gap: 2, m: 2}}>    
+                            <TextField
+                                label='First Name'
+                                name='firstName'
                                 required
                                 fullWidth
-                                variant='outlined'
-                                error={passwordError}
-                                helpertext={passwordErrorMessage}
+                                id='firstName'
+                                placeholder="John"
+                                error={nameError}
+                                helpertext={nameErrorMessage}
+                                color={nameError ? 'error' : 'primary'}
+                                onChange={handleChange}
                             />
-                        </FormControl>
-                    </Grid2>
-                    <Grid2 size={10} sx={{display: 'flex', flexDirection: 'row', gap: 2, m: 2}}>    
-                        <TextField
-                            label='First Name'
-                            name='firstName'
-                            required
-                            fullWidth
-                            id='firstName'
-                            placeholder="John"
-                            error={nameError}
-                            helpertext={nameErrorMessage}
-                            color={nameError ? 'error' : 'primary'}
-                            onChange={handleChange}
-                        />
-                        <TextField
-                            label='Last Name'
-                            name='lastName'
-                            required
-                            fullWidth
-                            id='lastName'
-                            placeholder="Doe"
-                            error={nameError}
-                            helpertext={nameErrorMessage}
-                            color={nameError ? 'error' : 'primary'}
-                            onChange={handleChange}
-                        />
-                    </Grid2>
-                    <Grid2 size={10} sx={{ m: 2 }}>
-                        <TextField
-                            label='Date of Birth'
-                            type='date'
-                            name='dateOfBirth'
-                            fullWidth
-                            onChange={handleChange}
-                        />
-                    </Grid2>
-                    <Grid2 size={10} sx={{ m: 2 }}>
-                        <TextField
-                            label='Phone Number'
-                            type='tel'
-                            name='phoneNumber'
-                            fullWidth
-                            placeholder="123-456-7890"
-                            onChange={handleChange}
-                        />
-                    </Grid2>
-                    <Grid2 size={10} sx={{ m: 2 }}>
-                        <TextField
-                            label='Street Address'
-                            name='address.street'
-                            fullWidth
-                            placeholder="123 Main St"
-                            onChange={handleChange}
-                        />
-                    </Grid2>
-                    <Grid2 size={10} sx={{ display: 'flex', flexDirection: 'row', gap: 2, m: 2 }}>
-                        <TextField
-                            label='City'
-                            name='address.city'
-                            fullWidth
-                            placeholder="City"
-                            onChange={handleChange}
-                        />
-                        <TextField
-                            label='Postal Code'
-                            name='address.postalCode'
-                            fullWidth
-                            placeholder="12345"
-                            onChange={handleChange}
-                        />
-                    </Grid2>
-                    <Grid2 size={10} sx={{ m: 2 }}>
-                        <TextField
-                            label='Country'
-                            name='address.country'
-                            fullWidth
-                            placeholder="Country"
-                            onChange={handleChange}
-                        />
-                    </Grid2>
-                    {socialMap}
-                    <Grid2 size={10} sx={{ m: 2 }}>
+                            <TextField
+                                label='Last Name'
+                                name='lastName'
+                                required
+                                fullWidth
+                                id='lastName'
+                                placeholder="Doe"
+                                error={nameError}
+                                helpertext={nameErrorMessage}
+                                color={nameError ? 'error' : 'primary'}
+                                onChange={handleChange}
+                            />
+                        </Grid2>
+                        <Grid2 size={10} sx={{ m: 2 }}>
+                            <TextField
+                                label='Date of Birth'
+                                type='date'
+                                name='dateOfBirth'
+                                fullWidth
+                                onChange={handleChange}
+                            />
+                        </Grid2>
+                        <Grid2 size={10} sx={{ m: 2 }}>
+                            <TextField
+                                label='Phone Number'
+                                type='tel'
+                                name='phoneNumber'
+                                fullWidth
+                                placeholder="123-456-7890"
+                                onChange={handleChange}
+                            />
+                        </Grid2>
+                        <Grid2 size={10} sx={{ m: 2 }}>
+                            <TextField
+                                label='Street Address'
+                                name='address.street'
+                                fullWidth
+                                placeholder="123 Main St"
+                                onChange={handleChange}
+                            />
+                        </Grid2>
+                        <Grid2 size={10} sx={{ display: 'flex', flexDirection: 'row', gap: 2, m: 2 }}>
+                            <TextField
+                                label='City'
+                                name='address.city'
+                                fullWidth
+                                placeholder="City"
+                                onChange={handleChange}
+                            />
+                            <TextField
+                                label='Postal Code'
+                                name='address.postalCode'
+                                fullWidth
+                                placeholder="12345"
+                                onChange={handleChange}
+                            />
+                        </Grid2>
+                        <Grid2 size={10} sx={{ m: 2 }}>
+                            <TextField
+                                label='Country'
+                                name='address.country'
+                                fullWidth
+                                placeholder="Country"
+                                onChange={handleChange}
+                            />
+                        </Grid2>
+                        {socialMap}
+                        <Grid2 size={10} sx={{ m: 2 }}>
+                            <Button
+                                type='button'
+                                fullWidth
+                                variant='outlined'
+                                onClick={addSocialMedia}
+                            >
+                                Add Social Media
+                            </Button>
+                        </Grid2>
+                        <Grid2 size={10} sx={{ m: 2 }}>
+                            <input
+                                accept="image/*"
+                                style={{ display: 'none' }}
+                                id="avatar-upload"
+                                type="file"
+                                onChange={handleAvatarChange}
+                            />
+                            <label htmlFor="avatar-upload">
+                                <Button variant="contained" component="span" fullWidth>
+                                    Upload Profile Picture
+                                </Button>
+                            </label>
+                            {avatarUrl && (
+                                <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+                                    <Avatar Urlsrc={avatar} sx={{ width: 100, height: 100 }} />
+                                </Box>
+                            )}
+                        </Grid2>
+                        <Grid2 size={10} sx={{ m: 2 }}>
+                            <TextField
+                                label='Bio'
+                                name='bio'
+                                fullWidth
+                                multiline
+                                rows={4}
+                                placeholder="Tell us about yourself"
+                                onChange={handleChange}
+                            />
+                        </Grid2>                
                         <Button
-                            type='button'
+                            type='submit'
                             fullWidth
-                            variant='outlined'
-                            onClick={addSocialMedia}
+                            variant='contained'
+                            onClick={validateInputs}
                         >
-                            Add Social Media
+                            Register
                         </Button>
                     </Grid2>
-                    <Grid2 size={10} sx={{ m: 2 }}>
-                        <input
-                            accept="image/*"
-                            style={{ display: 'none' }}
-                            id="avatar-upload"
-                            type="file"
-                            onChange={handleAvatarChange}
-                        />
-                        <label htmlFor="avatar-upload">
-                            <Button variant="contained" component="span" fullWidth>
-                                Upload Profile Picture
-                            </Button>
-                        </label>
-                        {avatarUrl && (
-                            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-                                <Avatar Urlsrc={avatar} sx={{ width: 100, height: 100 }} />
-                            </Box>
-                        )}
-                    </Grid2>
-                    <Grid2 size={10} sx={{ m: 2 }}>
-                        <TextField
-                            label='Bio'
-                            name='bio'
+                    <Divider>
+                        <Typography sx={{ color: "text.secondary" }}>or</Typography>
+                    </Divider>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, m:2 }}>
+                        <Button
                             fullWidth
-                            multiline
-                            rows={4}
-                            placeholder="Tell us about yourself"
-                            onChange={handleChange}
-                        />
-                    </Grid2>                
-                    <Button
-                        type='submit'
-                        fullWidth
-                        variant='contained'
-                        onClick={validateInputs}
-                    >
-                        Register
-                    </Button>
-                </Grid2>
-                <Divider>
-                    <Typography sx={{ color: "text.secondary" }}>or</Typography>
-                </Divider>
-                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, m:2 }}>
-                    <Button
-                        fullWidth
-                        variant='outlined'
-                        onClick={() => alert('SignUp with Google')}
-                    >
-                        Register with Google
-                    </Button>
-                    <Button
-                        fullWidth
-                        variant='outlined'
-                        onClick={() => alert('SignUp with Facebook')}
-                    >
-                        Register with Facebook
-                    </Button>
-                    <Typography sx={{ textAlign: 'center' }}>
-                        Already have an account?{' '}
-                        <Link 
-                            to="/login"
-                            variant="body2"
-                            sx={{ alignSelf: 'center' }}
+                            variant='outlined'
+                            onClick={() => alert('SignUp with Google')}
                         >
-                            Sign in
-                        </Link>
-                    </Typography>
-                </Box>
-            </Card>
-        </Container>
+                            Register with Google
+                        </Button>
+                        <Button
+                            fullWidth
+                            variant='outlined'
+                            onClick={() => alert('SignUp with Facebook')}
+                        >
+                            Register with Facebook
+                        </Button>
+                        <Typography sx={{ textAlign: 'center' }}>
+                            Already have an account?{' '}
+                            <Link 
+                                to="/login"
+                                variant="body2"
+                                sx={{ alignSelf: 'center' }}
+                            >
+                                Sign in
+                            </Link>
+                        </Typography>
+                    </Box>
+                </Card>
+            </Container>
+        </section>
     );
 }

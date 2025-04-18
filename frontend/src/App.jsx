@@ -12,7 +12,8 @@ import NotFound from './pages/NotFound';
 import Footer from './components/Footer';
 import UserProfile from './pages/UserProfile';
 import { AuthProvider } from './context/AuthContext';
-
+import ProtectedRoute from './components/ProtectedRoute';
+import PrivatePage from './pages/PrivatePage';
 
 export default function App() {
   const [ theme, setTheme ] = useState(localStorage.getItem('theme') || 'light')
@@ -40,8 +41,8 @@ export default function App() {
                 <Route path='/register' element={<Register />} />
                 <Route path='/login' element={<Login/>} />
                 <Route path='/forgot-password' element={<ForgotPassword/>} />
-                <Route path='/profile' element={<UserProfile/>} />
-                
+                <Route path='/profile' element={<ProtectedRoute element={UserProfile} />} />
+                <Route path='/private' element={<ProtectedRoute element={PrivatePage} />} />
                 <Route path='/404' element={<NotFound/>} />
                 {/* Redirect unknown routes to "/404" */}
                 <Route path='/*' element={<Navigate to="/404" />} />

@@ -1,4 +1,4 @@
-import { useState, useEffect, createContext, useContext } from "react";
+import { useState, useEffect, createContext} from "react";
 import { useNavigate } from 'react-router-dom';
 import Axios from 'axios'
 import propTypes from 'prop-types';
@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }) => {
                 }
             })
             .catch ((error) => {
-                console.error("Failed Authentication: ", error)
+                console.error("Failed Authentication: ", error.message)
             })
                 
         };
@@ -72,6 +72,6 @@ AuthProvider.propTypes = {
     children: propTypes.node.isRequired,
 }
 
-export const useAuth = () => useContext(AuthContext);
+// export const useAuth = () => useContext(AuthContext);
 
 export default AuthContext;

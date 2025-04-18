@@ -18,6 +18,7 @@ const userSchema = new mongoose.Schema({
         unique: true,
         lowercase: true,
         trim: true,
+        match: [ /^\S+@\S+\.\S+$/, 'Please use a valid email address.'],
     },
     password: {
         type: String,
@@ -87,13 +88,23 @@ const userSchema = new mongoose.Schema({
     isAdmin: {
         type: Boolean,
         default: false
-    }
+    },
+    isVerified: {
+        type: Boolean,
+        default: false
+    },
+    otp: {
+        type: String,
+    },
+    otpExp: {
+        type: Date
+    },
 }, {timestamps: true}
 );
 
 userSchema.pre('save', async function(next){
     if(!this.isModified("password")){
-        next();
+        return next();
     }
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
@@ -117,6 +128,15 @@ userSchema.methods.generateToken = async function(){
     const token = await jwt.sign(payload, secretKey, options)
     return token
 }
+
+userSchema.set('toJSON', {
+    transform:(doc, ret) => {
+        delete ret.password;
+        return ret;
+    },
+});
+userSchema.index({ email: 1 });
+userSchema.index({ username: 1});
 
 const User = mongoose.model('User', userSchema);
 export default User;
