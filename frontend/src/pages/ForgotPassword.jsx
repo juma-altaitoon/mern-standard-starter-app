@@ -7,6 +7,8 @@ import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
 import Grid2 from '@mui/material/Grid2';
 import Container from '@mui/material/Container';
+import { Stepper, Step, StepLabel, Collapse } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 export default function ForgotPassword() {
 
@@ -21,6 +23,7 @@ export default function ForgotPassword() {
     const [otpErrorMessage, setOtpErrorMessage] = useState('');
     const [passwordError, setPasswordError] = useState(false);
     const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
+    const navigate = useNavigate();
 
     const validateInputs = () => {
         const email = document.getElementById('email');
@@ -46,7 +49,7 @@ export default function ForgotPassword() {
         try {
             const response = await Axios.post('/users/forgot-password', { email});
             console.log(response.data);
-            setStep(2); // Move to OTP step
+            setStep(1); // Move to OTP step
         } catch (error) {
             console.error("Error requesting OTP: ", error.response?.data || error.message);
         }
@@ -66,7 +69,10 @@ export default function ForgotPassword() {
         try {
             const response = await Axios.post('/users/reset-password', { email, otp, newPassword});
             console.log(response.data)
-            setStep(1); // Reset to email step
+            setStep(0); // Reset to email step
+            setTimeout(() => {
+                navigate('/login')
+            }, 2000);
         } catch (error) {
             console.error("Error resseting password: ", error.response?.data || error.message)
         }
@@ -81,10 +87,17 @@ export default function ForgotPassword() {
                         variant="h4"
                         sx={{ width: '100%', fontSize: '2rem', m:2 }}
                     >
-                        {step === 1 ? "Forgot Password ?" : "Enter OTP"}
+                       Forgot Password
                     </Typography>
+                    <Stepper activeStep={step} alternativeLabel>
+                        {step.map((label, index) => (
+                            <Step key={index}>
+                                <StepLabel>{label}</StepLabel>
+                            </Step>
+                        ))}
+                    </Stepper>
                     <Typography component='p' variant='body1' sx={{ m:2 }} >
-                        {step === 1
+                        {step === 0
                             ? "Enter your email address and we will send you a link to reset your password."
                             : "Enter the OTP sent to your email address."
                         }
@@ -95,7 +108,7 @@ export default function ForgotPassword() {
                         onSubmit={(e) => e.preventDefault()}
                         sx={{ display: '100%', flexDirection: 'column', gap: 1, boxShadow: 2 }}
                     >
-                        {step === 1 && (
+                        <Collapse in={step === 0} timeout={500}>
                             <Grid2 size={10} sx={{ m: 2 }}>
                                 <TextField
                                     label='Email'
@@ -114,53 +127,54 @@ export default function ForgotPassword() {
                                     value={email}
                                 />
                             </Grid2>
-                        )}
-                        {step === 2 && (
-                            <>
-                                <Grid2 size={10} sx={{ m: 2 }}>
-                                    <TextField
-                                        label='OTP'
-                                        type='text'
-                                        name='otp'
-                                        required
-                                        fullWidth
-                                        id='otp'
-                                        placeholder="Enter 6-digit OTP"
-                                        variant='outlined'
-                                        error={otpError}
-                                        helperText={otpErrorMessage}
-                                        color={otpError ? 'error' : 'primary'}
-                                        onChange={(event) => setOtp(event.target.value)}
-                                        value={otp}
-                                    />
-                                </Grid2>
-                                <Grid2 size={10} sx={{ m: 2 }}>
-                                    <TextField
-                                        label='New Password'
-                                        type='password'
-                                        name='newPassword'
-                                        required
-                                        fullWidth
-                                        id='newPassword'
-                                        placeholder="Enter new password"
-                                        variant='outlined'
-                                        error={passwordError}
-                                        helperText={passwordErrorMessage}
-                                        color={passwordError ? 'error' : 'primary'}
-                                        onChange={(event) => setNewPassword(event.target.value)}
-                                        value={newPassword}
-                                    />
-                                </Grid2>
-                            </>
-                        )}
+                        </Collapse>
+                        
+                        <Collapse in={step === 1} timeout={500}>
+                        
+                            <Grid2 size={10} sx={{ m: 2 }}>
+                                <TextField
+                                    label='OTP'
+                                    type='text'
+                                    name='otp'
+                                    required
+                                    fullWidth
+                                    id='otp'
+                                    placeholder="Enter 6-digit OTP"
+                                    variant='outlined'
+                                    error={otpError}
+                                    helperText={otpErrorMessage}
+                                    color={otpError ? 'error' : 'primary'}
+                                    onChange={(event) => setOtp(event.target.value)}
+                                    value={otp}
+                                />
+                            </Grid2>
+                            <Grid2 size={10} sx={{ m: 2 }}>
+                                <TextField
+                                    label='New Password'
+                                    type='password'
+                                    name='newPassword'
+                                    required
+                                    fullWidth
+                                    id='newPassword'
+                                    placeholder="Enter new password"
+                                    variant='outlined'
+                                    error={passwordError}
+                                    helperText={passwordErrorMessage}
+                                    color={passwordError ? 'error' : 'primary'}
+                                    onChange={(event) => setNewPassword(event.target.value)}
+                                    value={newPassword}
+                                />
+                            </Grid2>
+                        </Collapse>
+                        
                         <Divider />
                         <Button
                             type='submit'
                             fullWidth
                             variant='contained'
-                            onClick={step === 1 ? handleRequestOtp : handleResetPassword}
+                            onClick={step === 0 ? handleRequestOtp : handleResetPassword}
                         >
-                            {step === 1 ? "Request OTP" : "Reset Password"}
+                            {step === 0 ? "Request OTP" : "Reset Password"}
                         </Button>
                     </Grid2>
                 </Card>

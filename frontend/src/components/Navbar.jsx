@@ -2,12 +2,13 @@ import { useState, useContext } from 'react';
 import { Link } from  'react-router-dom';
 import propTypes from 'prop-types';
 import { AppBar, Toolbar, Typography, Button, Container, IconButton, Box, Menu, MenuItem, Avatar } from '@mui/material'
+import { Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@mui/material';
 import DiamondIcon from '@mui/icons-material/Diamond';
 import MenuIcon from '@mui/icons-material/Menu';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import AuthContext  from '../context/AuthContext';
-
+import Axios from 'axios';
 
 const pages = ['About', 'Profile', 'Private'];
 
@@ -15,6 +16,10 @@ export default function Navbar({toggleTheme, theme}) {
     const [ anchorElNav, setAnchorElNav ] = useState(null);
     // Get authentication state and user information
     const { isAuthenticated, user } = useContext(AuthContext); 
+    const [ otp, setOtp ] = useState('');
+    const [ otpError, setOtpError ] = useState('');
+    const [ isModalOpen, setIsModalOpen ] = useState(false);
+
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -24,7 +29,33 @@ export default function Navbar({toggleTheme, theme}) {
         setAnchorElNav(null)
     }
 
+    const handleOpenModal = () => {
+        setIsModalOpen(true);
+    }
+
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+    }
+    const handleVerifyOtp = async () => {
+        if (!otp || otp.length !== 6){
+            setOtpError("Please enter a valid 6 digit OTP.");
+            return;
+        }
+        try {
+            const response = await Axios.post("http://localhost:5000/users/verify-user", { otp }, { withCredentials: true });
+            console.log(response.data.message);
+            setIsModalOpen(false);
+        } catch (error) {
+            setOtpError(error.response?.data?.message || "Failed to verify OTP." );
+        }
+    }
+
+    if ( isAuthenticated && !user.isVerified && !isModalOpen) {
+        handleOpenModal();
+    }
+
     return (
+    <>
         <AppBar component="header" position='sticky' elevation={10} sx={{maxWidth:'100%', maxHeight: '10vh', justifyContent: 'center', alignItems: 'center'}}>
             <Container maxWidth="xl"> 
                 <Toolbar disableGutters >
@@ -123,6 +154,32 @@ export default function Navbar({toggleTheme, theme}) {
                 </Toolbar>
             </Container>
         </AppBar>
+
+        <Dialog open={isModalOpen} onClose={handleCloseModal}>
+            <DialogTitle>Verify Your Account</DialogTitle>
+            <DialogContent>
+                <TextField 
+                    label= "Enter OTP"
+                    type="text"
+                    fullWidth
+                    variant="outlined"
+                    value={otp}
+                    onChange={(e) => setOtp(e.target.value)}
+                    error={!!otpError}
+                    helperText={otpError}
+                    sx={{ mt: 2 }}
+                />
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={handleCloseModal} color="inherit">
+                    Cancel
+                </Button>
+                <Button onClick={handleVerifyOtp} variant='contained' color='primary'>
+                    Verify
+                </Button>
+            </DialogActions>
+        </Dialog>
+    </>
     );
 }
 

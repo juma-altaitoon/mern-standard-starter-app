@@ -34,26 +34,27 @@ export const register = async (req, res) => {
     }
     const user = new User(req.body)
     // Future implementation of OTP inclusion
-    // const otp = generateOTP();
-    // user.otp = otp;
-    // user.otpExp = Date.now() + (30 * 60 * 1000);
-    await user.save()
-    .then((user)=> {
-        // Future Implementation of SMTP service that will also be use for OTP.
-        // const mailOptions = {
-        //     from: process.env.BASE_EMAIL,
-        //     to: email,
-        //     subject: "Welcome to our Community",
-        //     text: `Hello!\nWelcome to our community!\nYour account has been successfully created with the email: ${email}`
-        // }
-        // transporter.sendMail(mailOptions)
+    const otp = generateOTP();
+    user.otp = otp;
+    user.otpExp = Date.now() + (30 * 60 * 1000);
+    try {
+        const savedUser = await user.save();
 
-        res.status(201).json({message: "User Registered", user})
-    })
-    .catch ((error) => {
+        // Future Implementation of SMTP service that will also be used for OTP.
+        const mailOptions = {
+            from: process.env.BASE_EMAIL,
+            to: email,
+            subject: "Welcome to our Community",
+            text: `Hello!\nWelcome to our community!\nYour account has been successfully created with the email: ${email}\nYour OTP code is ${otp}.\nPlease verify your account on your next Login.\n\nThnk you for joining us!\n\n Best Regards,\nThe Team `
+        }
+        await transporter.sendMail(mailOptions);
+
+        res.status(201).json({message: "User Registered", savedUser})
+    } catch (error) {
+        console.error(error);
         res.status(400).json({message: "Invalid user data", error});
-        throw new Error("Invalid user data");
-    })
+    }
+    
 };
 
 // User Sign In and authentication
@@ -72,22 +73,13 @@ export const signin = async (req, res) => {
         }
 
         // Generate JWT
-        await user.generateToken()
-        .then((token) => {
-            res.cookie(
-                'token',
-                token,
-                { expires: new Date(Date.now()+ (3600*1000)) , httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: "Strict" }
-            );
-            if (process.env.NODE_ENV === 'production'){
-                console.log("token generated: ",token)
-            }
-            
-            return res.status(200).json({ message: "Successfully signed in", user: user._id });
-        }).catch((error) => {
-            console.error(error);
-            res.status(500).json({ message: "Server Error" });
-        })
+        const token = await user.generateToken();
+        res.cookie(
+            'token',
+            token,
+            { expires: new Date(Date.now()+ (3600*1000)) , httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: "Strict" }
+        );
+        res.status(200).json({ message: "Successfully signed in", user: user._id });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Server Error" });
@@ -127,7 +119,9 @@ export const verifyOTP = async (req, res) => {
         if (!user) {
             return res.status(400).json({ messenger: 'User not found'});
         }
-        if (user.otp !== otp || user.otpExp < Date.now()) {
+        // Check if OTP is valid and not expired
+        // Use timingSafeEqual to prevent timing attacks
+        if (!crypto.timingSafeEqual(Buffer.from(user.otp), Buffer.from(otp)) || user.otpExp < Date.now()) {
             return res.status(400).json({ message: 'Invalid or Expired OTP' });
         }
 
@@ -160,13 +154,14 @@ export const sendOtp = async (req, res) => {
                 from: process.env.BASE_EMAIL,
                 to: email,
                 subject: "Password Reset Request",
-                text: `Hello!\nA password reset request made by ${email}.\nYour OTP code is ${code} `
+                text: `Hello!\nA password reset request made by ${email}.\nYour OTP code is ${otp}\nPlease use this code to reset your password.\n\nThank you,\nThe Team `
             }
-        await transporter.sendMail(mailOptions)
+        await transporter.sendMail(mailOptions);
         
         res.status(200).json({ message: 'OTP sent to email'});
 
     } catch (error) {
+        console.error("Error sending OTP: ", error);
         res.status(500).json({ message: 'Error sending OTP', error });
     }
 };
@@ -180,7 +175,7 @@ export const passwordReset = async (req, res) => {
         if(!user) {
             return res.status(400).json({ message: 'User not found' });
         }
-        if (user.otp !== otp || user.otpExp < Date.now()) {
+        if (!crypto.timingSafeEqual(Buffer.from(user.otp), Buffer.from(otp)) || user.otpExp < Date.now()) {
             return res.status(400).json({ message: "Invalid OTP"});
         }
 

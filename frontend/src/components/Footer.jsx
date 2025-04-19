@@ -1,4 +1,5 @@
-import { Container, Typography, Link, Box, Grid2 } from "@mui/material";
+import { Container, Typography, Box, Grid2 } from "@mui/material";
+import { Link } from "react-router-dom";
 import InstagramIcon from '@mui/icons-material/Instagram';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
@@ -9,8 +10,8 @@ import PinterestIcon from '@mui/icons-material/Pinterest';
 export default function Footer(){
 
     return(
-        <Box component='footer' sx={{ position: 'fixed', py: 3, bgcolor: 'grey', bottom:0, left:0, maxHeight: '10%', width: '100%' }} >
-            <Container maxWidth='lg'>
+        <Box component='footer' sx={{ py: 3, bgcolor: 'grey.800', color:'white', width: '100%' }} >
+            <Container maxWidth='lg' sx={{ py: 2 }}>
                 <Grid2 container spacing={2} justifyContent='space-between'>
                     <Grid2  xs={12} md={4}>
                         <Typography variant="body2" align="left">
@@ -27,12 +28,11 @@ export default function Footer(){
                     <Grid2 xs={12} md={4}>
                         <Typography variant="body2" align="right">
                             Follow :
-                            <Link to='#' color="inherit" sx={{ ml: 1 }}><FacebookIcon/></Link>
-                            <Link to='#' color="inherit" sx={{ ml: 1 }}><InstagramIcon/></Link>
-                            <Link to='#' color="inherit" sx={{ ml: 1 }}>< LinkedInIcon /></Link>
-                            <Link to='#' color="inherit" sx={{ ml: 1 }}><XIcon/></Link>
-                            <Link to='#' color="inherit" sx={{ ml: 1 }}><PinterestIcon /></Link>
-
+                            <Link href='#' color="inherit" sx={{ ml: 1 }} aria-label="Facebook" ><FacebookIcon /></Link>
+                            <Link href='#' color="inherit" sx={{ ml: 1 }} aria-label="Instagram" ><InstagramIcon /></Link>
+                            <Link href='#' color="inherit" sx={{ ml: 1 }} aria-label="LinkedIn" ><LinkedInIcon /></Link>
+                            <Link href='#' color="inherit" sx={{ ml: 1 }} aria-label="X (formerly Twitter)" ><XIcon /></Link>
+                            <Link href='#' color="inherit" sx={{ ml: 1 }} aria-label="Pinterest" ><PinterestIcon /></Link>
                         </Typography>
                     </Grid2>
                 </Grid2>

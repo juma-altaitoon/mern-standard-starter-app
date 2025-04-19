@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Link from '@mui/material/Link';
+import Link from 'react-router-dom';
 import Divider from '@mui/material/Divider';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';

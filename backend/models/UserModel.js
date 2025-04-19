@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import validator from 'validator';
 
 
 const userSchema = new mongoose.Schema({
@@ -18,7 +19,7 @@ const userSchema = new mongoose.Schema({
         unique: true,
         lowercase: true,
         trim: true,
-        match: [ /^\S+@\S+\.\S+$/, 'Please use a valid email address.'],
+        validate: [ validator.isEmail, 'Please use a valid email address.'],
     },
     password: {
         type: String,
@@ -46,7 +47,7 @@ const userSchema = new mongoose.Schema({
         trim: true,
         minlength: 10,
         maxlength: 15,
-        default:"0000-0000-00",
+        default: null,
     },
     address: {
         street: {
@@ -74,7 +75,11 @@ const userSchema = new mongoose.Schema({
     social: {
         type: Map,
         of: String,
-        trim: true,
+        validate: {
+            validator: function(value) {
+                return Object.values(value).every((url) => validator.isURL(url))
+            }
+        },
     },
     avatar: {
         type: String,
@@ -106,13 +111,15 @@ userSchema.pre('save', async function(next){
     if(!this.isModified("password")){
         return next();
     }
-    const salt = await bcrypt.genSalt(10);
+    const saltRounds = process.env.SALT_ROUNDS || 10;
+    const salt = await bcrypt.genSalt(saltRounds);
     this.password = await bcrypt.hash(this.password, salt);
 })
 
 userSchema.methods.matchPassword = async function (enteredPassword) {
-    return bcrypt.compare(enteredPassword, this.password)
+    return  await bcrypt.compare(enteredPassword, this.password)
 }
+
 userSchema.methods.generateToken = async function(){
     // Token Payload
     const payload = {
@@ -123,7 +130,7 @@ userSchema.methods.generateToken = async function(){
     // JWT Secret Key
     const secretKey = process.env.JWT_SECRET;
     const options = {
-        expiresIn: '1h',
+        expiresIn: process.env.JWT_EXPIRY || '1h',
     }
     const token = await jwt.sign(payload, secretKey, options)
     return token
@@ -132,11 +139,15 @@ userSchema.methods.generateToken = async function(){
 userSchema.set('toJSON', {
     transform:(doc, ret) => {
         delete ret.password;
+        delete ret.otp;
+        delete ret.otpExp;
+        delete ret.isAdmin
         return ret;
     },
 });
 userSchema.index({ email: 1 });
 userSchema.index({ username: 1});
+userSchema.index({ isVerified: 1});
 
 const User = mongoose.model('User', userSchema);
 export default User;
