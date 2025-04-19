@@ -3,7 +3,7 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import { connectDB } from './config/db.js';
-import authRoutes from './routes/authRoutes.js';
+import authRouter from './routes/authRoutes.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 import helmet from 'helmet';
 import mongoose from 'mongoose';
@@ -49,7 +49,7 @@ app.use(cookieParser());
 app.use(cors(corsOptions));
 
 // Mount Routes
-app.use('/users', authRoutes, limiter);
+app.use('/users', authRouter, limiter);
 app.use(notFound);
 app.use(errorHandler);
 

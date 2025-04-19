@@ -145,9 +145,8 @@ userSchema.set('toJSON', {
         return ret;
     },
 });
-userSchema.index({ email: 1 });
-userSchema.index({ username: 1});
-userSchema.index({ isVerified: 1});
+// userSchema.index({ username: 1});
+
 
 const User = mongoose.model('User', userSchema);
 export default User;

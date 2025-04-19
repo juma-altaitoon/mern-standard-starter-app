@@ -12,6 +12,6 @@ authRouter.delete('/logout', protect, user.logout);
 authRouter.post('/verify-user', user.verifyOTP);
 authRouter.post('/forgot-password', user.sendOtp);
 authRouter.post('/reset-password', user.passwordReset)
-    
 
-export default router;
+
+export default authRouter;
