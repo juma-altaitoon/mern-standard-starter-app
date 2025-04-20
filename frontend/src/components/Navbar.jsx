@@ -1,25 +1,25 @@
 import { useState, useContext } from 'react';
-import { Link } from  'react-router-dom';
+import { Link, useNavigate } from  'react-router-dom';
 import propTypes from 'prop-types';
 import { AppBar, Toolbar, Typography, Button, Container, IconButton, Box, Menu, MenuItem, Avatar } from '@mui/material'
-import { Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@mui/material';
+// import { Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@mui/material';
 import DiamondIcon from '@mui/icons-material/Diamond';
 import MenuIcon from '@mui/icons-material/Menu';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import AuthContext  from '../context/AuthContext';
-import Axios from 'axios';
+// import Axios from 'axios';
 
 const pages = ['About', 'Profile', 'Private'];
 
 export default function Navbar({toggleTheme, theme}) {
     const [ anchorElNav, setAnchorElNav ] = useState(null);
     // Get authentication state and user information
-    const { isAuthenticated, user } = useContext(AuthContext); 
-    const [ otp, setOtp ] = useState('');
-    const [ otpError, setOtpError ] = useState('');
-    const [ isModalOpen, setIsModalOpen ] = useState(false);
-
+    const { logout, isAuthenticated, user } = useContext(AuthContext); 
+    // const [ otp, setOtp ] = useState('');
+    // const [ otpError, setOtpError ] = useState('');
+    // const [ isModalOpen, setIsModalOpen ] = useState(false);
+    const navigate = useNavigate();
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -29,29 +29,34 @@ export default function Navbar({toggleTheme, theme}) {
         setAnchorElNav(null)
     }
 
-    const handleOpenModal = () => {
-        setIsModalOpen(true);
-    }
+    // const handleOpenModal = () => {
+    //     setIsModalOpen(true);
+    // }
 
-    const handleCloseModal = () => {
-        setIsModalOpen(false);
-    }
-    const handleVerifyOtp = async () => {
-        if (!otp || otp.length !== 6){
-            setOtpError("Please enter a valid 6 digit OTP.");
-            return;
-        }
-        try {
-            const response = await Axios.post("http://localhost:5000/users/verify-user", { otp }, { withCredentials: true });
-            console.log(response.data.message);
-            setIsModalOpen(false);
-        } catch (error) {
-            setOtpError(error.response?.data?.message || "Failed to verify OTP." );
-        }
-    }
+    // const handleCloseModal = () => {
+    //     setIsModalOpen(false);
+    // }
+    // const handleVerifyOtp = async () => {
+    //     if (!otp || otp.length !== 6){
+    //         setOtpError("Please enter a valid 6 digit OTP.");
+    //         return;
+    //     }
+    //     try {
+    //         const response = await Axios.post("http://localhost:5000/users/verify-user", { otp }, { withCredentials: true });
+    //         console.log(response.data.message);
+    //         setIsModalOpen(false);
+    //     } catch (error) {
+    //         setOtpError(error.response?.data?.message || "Failed to verify OTP." );
+    //     }
+    // }
+    
+    // if ( isAuthenticated && !user.isVerified && !isModalOpen) {
+    //     handleOpenModal();
+    // }
 
-    if ( isAuthenticated && !user.isVerified && !isModalOpen) {
-        handleOpenModal();
+    const handleLogout = async () => {
+        await logout();
+        navigate('/login');
     }
 
     return (
@@ -141,11 +146,14 @@ export default function Navbar({toggleTheme, theme}) {
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                             <Avatar src={user.avatarUrl} alt={user.username}>{user.username}</Avatar>
                             <Typography variant='body1' >{user.username}</Typography>
+                            <Button variant='outlined' size='medium' color='inherit' onClick={handleLogout} sx={{ fontSize: '1rem', borderRadius: 50}}>
+                                Logout
+                            </Button>
                         </Box>
                     ) : (
                         <>
-                            <Button variant='outlined' size='large' color='inherit' component={Link} to='/login' sx={{ fontSize: '1rem', borderRadius: 50 }} >Login</Button>
-                            <Button variant='outlined' size='large' color='inherit' component={Link} to='/register' sx={{ fontSize: '1rem', borderRadius: 50, m:1 }} >Register</Button>
+                            <Button variant='outlined' size='medium' color='inherit' component={Link} to='/login' sx={{ fontSize: '1rem', borderRadius: 50 }} >Login</Button>
+                            <Button variant='outlined' size='medium' color='inherit' component={Link} to='/register' sx={{ fontSize: '1rem', borderRadius: 50, m:1 }} >Register</Button>
                         </>
                     )}
                     <Button variant='outlined' color='inherit' onClick={toggleTheme} size='small' sx={{  borderRadius: 100 }}>
@@ -155,7 +163,7 @@ export default function Navbar({toggleTheme, theme}) {
             </Container>
         </AppBar>
 
-        <Dialog open={isModalOpen} onClose={handleCloseModal}>
+        {/* <Dialog open={isModalOpen} onClose={handleCloseModal}>
             <DialogTitle>Verify Your Account</DialogTitle>
             <DialogContent>
                 <TextField 
@@ -178,7 +186,7 @@ export default function Navbar({toggleTheme, theme}) {
                     Verify
                 </Button>
             </DialogActions>
-        </Dialog>
+        </Dialog> */}
     </>
     );
 }

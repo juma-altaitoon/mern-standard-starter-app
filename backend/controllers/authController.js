@@ -10,44 +10,59 @@ const generateOTP = () => {
 
 // Register New User
 export const register = async (req, res) => {
-
-    const {
-        email,
-        username,
-        password,
-        firstName,
-        lastName,
-        dateOfBirth,
-        phoneNumber,
-        address,
-        social,
-        avatar,
-        bio,
-        isAdmin
-    } = req.body;
-
-    const existingUser = await User.findOne({ email });
-    console.log(req.body)
-    if (existingUser) {
-        res.status(400);
-        throw new Error("User already exists.");
-    }
-    const user = new User(req.body)
-    // Future implementation of OTP inclusion
-    const otp = generateOTP();
-    user.otp = otp;
-    user.otpExp = Date.now() + (30 * 60 * 1000);
     try {
+        const {
+            email,
+            username,
+            password,
+            firstName,
+            lastName,
+            dateOfBirth,
+            phoneNumber, 
+            bio,
+        } = req.body;
+
+        const existingUser = await User.findOne({ email });
+        console.log(req.body)
+        if (existingUser) {
+            res.status(400);
+            throw new Error("User already exists.");
+        }
+        // Parse nested fields
+        const address = req.body.adress ? JSON.parse(req.body.address) : {};
+        const social = req.body.socialMedial ? JSON.parse(req.body.socialMedial) : [];
+        const avatar = req.file ? req.file.path : null;
+
+        const user = new User({
+            email,
+            username,
+            password,
+            firstName,
+            lastName,
+            dateOfBirth,
+            phoneNumber,
+            address,
+            social,
+            avatar,
+            bio,
+        });
+        
+        // // Future implementation of OTP inclusion
+        // const otp = generateOTP();
+        // user.otp = otp;
+        // user.otpExp = Date.now() + (30 * 60 * 1000);
+        
+        console.log(user)
         const savedUser = await user.save();
 
-        // Future Implementation of SMTP service that will also be used for OTP.
-        const mailOptions = {
-            from: process.env.BASE_EMAIL,
-            to: email,
-            subject: "Welcome to our Community",
-            text: `Hello!\nWelcome to our community!\nYour account has been successfully created with the email: ${email}\nYour OTP code is ${otp}.\nPlease verify your account on your next Login.\n\nThnk you for joining us!\n\n Best Regards,\nThe Team `
-        }
-        await transporter.sendMail(mailOptions);
+        // // Future Implementation of SMTP service that will also be used for OTP.
+        // const mailOptions = {
+        //     from: process.env.BASE_EMAIL,
+        //     to: email,
+        //     subject: "Welcome to our Community",
+        //     text: `Hello!\nWelcome to our community!\nYour account has been successfully created with the email: ${email}\nYour OTP code is ${otp}.\nPlease verify your account on your next Login.\n\nThnk you for joining us!\n\n Best Regards,\nThe Team `
+        // }
+        // await transporter.sendMail(mailOptions);
 
         res.status(201).json({message: "User Registered", savedUser})
     } catch (error) {

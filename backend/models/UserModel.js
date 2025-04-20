@@ -45,9 +45,9 @@ const userSchema = new mongoose.Schema({
     phoneNumber: {
         type: String,
         trim: true,
-        minlength: 10,
+        minlength: 8,
         maxlength: 15,
-        default: null,
+        default: "0000-0000",
     },
     address: {
         street: {
@@ -72,15 +72,18 @@ const userSchema = new mongoose.Schema({
             maxlength: 50,
         },
     },
-    social: {
-        type: Map,
-        of: String,
-        validate: {
-            validator: function(value) {
-                return Object.values(value).every((url) => validator.isURL(url))
+    social: [
+        {
+            platform: {
+                type: String,
+                trim: true,
+            },
+            handle: {
+                type: String,
+                trim: true,
             }
-        },
-    },
+        }
+    ],
     avatar: {
         type: String,
         trim: true,
@@ -111,7 +114,7 @@ userSchema.pre('save', async function(next){
     if(!this.isModified("password")){
         return next();
     }
-    const saltRounds = process.env.SALT_ROUNDS || 10;
+    const saltRounds = parseInt(process.env.SALT_ROUNDS) || 10;
     const salt = await bcrypt.genSalt(saltRounds);
     this.password = await bcrypt.hash(this.password, salt);
 })

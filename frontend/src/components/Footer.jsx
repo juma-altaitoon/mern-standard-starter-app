@@ -14,19 +14,19 @@ export default function Footer(){
             <Container maxWidth='lg' sx={{ py: 2 }}>
                 <Grid2 container spacing={2} justifyContent='space-between'>
                     <Grid2  xs={12} md={4}>
-                        <Typography variant="body2" align="left">
+                        <Typography variant="body1" align="left">
                             @ {new Date().getFullYear()}. All rights reserved.
                         </Typography>
                     </Grid2>
                     <Grid2 xs={12} md={4}>
-                        <Box sx={{ display: 'flex', justifyContent: 'center'}}>
+                        <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: 2}}>
                             <Link to='/about' color="inherit" sx={{ mx: 1 }} >About</Link>
                             <Link to='#' color="inherit" sx={{ mx: 1 }} >Contact</Link>
                             <Link to='#' color="inherit" sx={{ mx: 1 }} >Privacy</Link>
                         </Box>
                     </Grid2>
                     <Grid2 xs={12} md={4}>
-                        <Typography variant="body2" align="right">
+                        <Typography variant="body1" align="right">
                             Follow :
                             <Link href='#' color="inherit" sx={{ ml: 1 }} aria-label="Facebook" ><FacebookIcon /></Link>
                             <Link href='#' color="inherit" sx={{ ml: 1 }} aria-label="Instagram" ><InstagramIcon /></Link>

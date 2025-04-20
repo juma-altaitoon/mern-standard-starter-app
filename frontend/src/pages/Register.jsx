@@ -96,13 +96,13 @@ export default function Register() {
 
     const handleSocialMediaChange = (index, event) => {
         const newSocialMedia = [...socialMedia];
-        newSocialMedia[index][event.target.name] = event.target.value;
+        newSocialMedia[event.target.name] = event.target.value;
         setSocialMedia(newSocialMedia)
         setNewUser({ ...newUser, socialMedia: newSocialMedia });
     }
  
     const addSocialMedia = () => {
-        setSocialMedia([ ...socialMedia, { platform: '', handle: ''} ]);
+        setSocialMedia([ ...socialMedia, { '' : ''} ]);
     }
 
     const handleAvatarChange = (event) => {
@@ -125,18 +125,28 @@ export default function Register() {
         }
         console.log(newUser)
 
-        const formData = new FormData();
+        let formData = new FormData();
         Object.keys(newUser).forEach(key => {
-            if (key === 'socialMedia') {
-                formData.append(key, JSON.stringify(newUser[key]));
-            } else {
-                formData.append(key, newUser[key]);
+            // Only Append if the value is not null/undefined
+            if (newUser[key]) {
+                if (key === 'socialMedia') {
+                    formData.append(key, JSON.stringify(newUser[key]));
+                } else if (key.startsWith('address.')){
+                    const addressKey = key.split('.')[1];
+                    formData.append(`address[${addressKey}]`, newUser[key])
+                } else {
+                    formData.append(key, newUser[key]);
+                }
             }
         });
         if (avatar) {
             formData.append('avatar', avatar);
         }
-
+        // Debug formData
+        for (let pair of formData.entries()) {
+            console.log(pair[0] + ': ' + pair[1]);
+        }
+    
         await Axios.post("http://localhost:5000/users/register", formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'

@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }) => {
     const logout = async() => {
         // Logout to call to the server to clear the token
         try {
-            await Axios.delete("http://localhost:5000/users/logout",{}, { withCredentials: true });
+            await Axios.post("http://localhost:5000/users/logout",{}, { withCredentials: true });
             setIsAuthenticated(false);
             setUser(null)
             setMessage("Sign Out Succesful")

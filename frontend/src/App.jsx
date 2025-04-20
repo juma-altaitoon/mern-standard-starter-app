@@ -7,7 +7,7 @@ import Footer from './components/Footer';
 import { AuthProvider } from './context/AuthContext';
 import { CircularProgress } from '@mui/material';
 import { createTheme, ThemeProvider} from '@mui/material/styles';
-import Box from 'mui/material/Box';
+import Box from '@mui/material/Box';
 
 const Home = lazy(() => import('./pages/Home'));
 const About = lazy(()=> import('./pages/About'));
@@ -18,6 +18,7 @@ const NotFound = lazy(() => import('./pages/NotFound'));
 const UserProfile = lazy(() => import('./pages/UserProfile'));
 const ProtectedRoute = lazy(() => import('./components/ProtectedRoute'));
 const PrivatePage = lazy(() => import('./pages/PrivatePage'));
+const Register2 = lazy(() => import('./pages/Register2'));
 
 export default function App() {
   const [ theme, setTheme ] = useState(localStorage.getItem('theme') || 'light')
@@ -55,6 +56,7 @@ export default function App() {
                 <Route path='/' element={<Home/>} />
                 <Route path='/about' element={<About/>} />
                 <Route path='/register' element={<Register />} />
+                <Route path='/register2' element={<Register2 />} />
                 <Route path='/login' element={<Login/>} />
                 <Route path='/forgot-password' element={<ForgotPassword/>} />
                 <Route path='/profile' element={<ProtectedRoute element={UserProfile} />} />

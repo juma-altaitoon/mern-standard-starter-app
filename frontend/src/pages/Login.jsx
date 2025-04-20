@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Link from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Divider from '@mui/material/Divider';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
@@ -96,7 +96,7 @@ export default function Login() {
     return(
         <section>
             <Container spacing={2} sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: "space-evenly" }} >
-                <Card variant='outlined' elevation={1} sx={{ m: 2, boxShadow: 3, borderColor: 'primary'}}>
+                <Card variant='outlined' elevation={1} sx={{ m: 2, boxShadow: 3, borderColor: 'primary' }}>
                     <Typography
                         component="h1"
                         sx={{fontSize: '2rem', textAlign: 'center', mt: 1 }}
